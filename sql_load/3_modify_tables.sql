@@ -54,3 +54,25 @@ ORDER BY
         WHEN salary_year_avg < 50000 THEN 3
         ELSE 4
     END;
+
+with top_skills_table as (
+    select 
+        skills_job_dim.skill_id, 
+        count(*) as total_skills 
+    from 
+        skills_job_dim
+    GROUP BY 
+        skill_id
+)
+select
+    skills_dim.skill_id,
+    top_skills_table.total_skills,
+    skills_dim.skills as skills_name
+from 
+    skills_dim
+left join top_skills_table on top_skills_table. skill_id = skills_dim.skill_id
+ORDER BY top_skills_table.total_skills desc;
+
+
+
+
